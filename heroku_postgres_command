@@ -1,0 +1,86 @@
+                                 Heroku Postgres command
+For more refer info: https://devcenter.heroku.com/articles/heroku-postgresql
+http://blog.sahildiwan.com/posts/flask-and-postgresql-app-deployed-on-heroku/
+
+1. In app.py:
+	from flask_heroku import Heroku     //install (pip install flask_heroku & add in requirement.txt)
+	app.config['SQLALCHEMY_DATABASE_URI']     // use for local database
+	heroku = Heroku(app) // use for production database
+
+2. heroku addons:create heroku-postgresql:hobby-dev
+
+3. (if multi database) { heroku pg:promote HEROKU_POSTGRESQL_YELLOW} // else set default database_url
+
+4. heroku pg:wait     // it will automatic complete when postgres gets ready
+
+5. In terminal run :
+heroku run python 
+From app_name import db (In my case it is bookmanager)
+db.create_all() // ( if it gives error like ModuleNotFoundError: No module named 'psycopg2') then use pip install psycopg2-binary
+exit()
+
+6. If error comes like this (Error: Cannot run more than 1 Free size dynos).
+	Run a. heroku ps
+	    b. heroku ps:stop run.5365
+7. Now cross check if our database is created or not on heroku:-
+GO TO :
+Data → settings→ view credentials
+---------------------------------------------------------------------------------------------------------------------------
+                               To get database info from command line use this:
+
+7. heroku pg:info    //shows database info
+8. heroku pg:psql   //heroku database editor 
+9. To get table records from terminal:
+Run: select * from table_name; // In mycase it is books
+---------------------------------------------------------------------------------------------------------------------------
+                              To fetch heroku database to our local server:
+
+heroku pg:pull postgresql-clean-54444 mylocaldb (this is the new db name which will reflect locally) --app flaskherokudeployconnectivity --version=9.5 (default is 11.0)
+Or
+PGUSER=postgres PGPASSWORD=password heroku pg:pull postgresql-shaped-48201 dbheroku( this is the new db name which will reflect locally) --app guarded-mesa-30364 --version=9.5 (default is 11.0)
+
+Where, 
+Postgresql-clean-54444 // database name
+Flaskherokudeployconnectivity // app name
+
+We can get the database name and app name from heroku CLI to avoid confusion.
+GO TO :
+Data → settings→ view credentials → Heroku CLI ( it will look like this: heroku pg:psql postgresql-clean-54444 --app flaskherokudeployconnectivity)
+
+If get the error like this during fetching data from heroku database:
+get error Peer authentication failed for user "postgres" to resolve this go to pg_hba.conf (got to path cd /etc/postgresql/11/main) file and (sudo nano pg_hba.conf) and change 
+	# Database administrative login by Unix domain socket
+local   all             postgres                                peer
+To
+local   all             postgres                                trust
+Then 	a. sudo -u postgres psql
+	b. ALTER USER postgres PASSWORD 'password';
+Now  change trust to md5
+local   all             postgres                                md5
+Then,
+sudo service postgresql restart
+Go back to heroku and again run the same command, it will make new local db.
+
+				Postgres Setup command
+sudo -u postgres psql
+psql -U postgres -h localhost
+ALTER USER postgres PASSWORD 'password';			
+
+                               Remove postgres command
+
+sudo apt-get --purge remove postgresql
+dpkg -l | grep postgres
+sudo apt-get --purge remove postgresql postgresql-doc postgresql-common
+
+		   		Install postgres-11 command
+
+sudo apt-get install wget ca-certificates
+wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add -
+sudo sh -c 'echo "deb http://apt.postgresql.org/pub/repos/apt/ `lsb_release -cs`-pgdg main" >> /etc/apt/sources.list.d/pgdg.list'
+sudo apt-get update
+sudo apt-get install postgresql postgresql-contrib
+
+
+
+
+
