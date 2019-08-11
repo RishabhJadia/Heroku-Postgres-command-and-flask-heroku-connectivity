@@ -16,7 +16,7 @@ http://blog.sahildiwan.com/posts/flask-and-postgresql-app-deployed-on-heroku/
 5. In terminal run :
 heroku run python 
 From app_name import db (In my case it is bookmanager)
-db.create_all() // ( if it gives error like ModuleNotFoundError: No module named 'psycopg2') then use pip install psycopg2-binary
+db.create_all() // ( if it gives error like ModuleNotFoundError: No module named 'psycopg2') then use pip3 install psycopg2-binary
 exit()
 
 6. If error comes like this (Error: Cannot run more than 1 Free size dynos).
