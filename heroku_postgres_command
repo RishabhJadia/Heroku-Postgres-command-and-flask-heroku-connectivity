@@ -1,4 +1,4 @@
-                                 Heroku Postgres command
+                ** Heroku Postgres command **
 For more refer info: https://devcenter.heroku.com/articles/heroku-postgresql
 http://blog.sahildiwan.com/posts/flask-and-postgresql-app-deployed-on-heroku/
 
@@ -26,14 +26,14 @@ exit()
 GO TO :
 Data → settings→ view credentials
 ---------------------------------------------------------------------------------------------------------------------------
-                               To get database info from command line use this:
+                ** To get database info from command line use this: **
 
 7. heroku pg:info    //shows database info
 8. heroku pg:psql   //heroku database editor 
 9. To get table records from terminal:
 Run: select * from table_name; // In mycase it is books
 ---------------------------------------------------------------------------------------------------------------------------
-                              To fetch heroku database to our local server:
+                ** To fetch heroku database to our local server: **
 
 heroku pg:pull postgresql-clean-54444 mylocaldb (this is the new db name which will reflect locally) --app flaskherokudeployconnectivity --version=9.5 (default is 11.0)
 Or
@@ -61,18 +61,18 @@ Then,
 sudo service postgresql restart
 Go back to heroku and again run the same command, it will make new local db.
 
-				Postgres Setup command
+				** Postgres Setup command **
 sudo -u postgres psql
 psql -U postgres -h localhost
 ALTER USER postgres PASSWORD 'password';			
 
-                               Remove postgres command
+                ** Remove postgres command **
 
 sudo apt-get --purge remove postgresql
 dpkg -l | grep postgres
 sudo apt-get --purge remove postgresql postgresql-doc postgresql-common
 
-		   		Install postgres-11 command
+		   		** Install postgres-11 command **
 
 sudo apt-get install wget ca-certificates
 wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add -
